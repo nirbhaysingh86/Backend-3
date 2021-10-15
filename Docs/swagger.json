@@ -1,0 +1,6406 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Application Modernization Web App REST API",
+    "description": "Backend REST API for the Application Modernization",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhot:8080/api/ver{version}/",
+      "description": "Local Development",
+      "variables": {
+        "version": {
+          "default": "1",
+          "description": "The API version number"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logs in user with given credentials.",
+        "description": "JWT Bearer authentication should be used.",
+        "requestBody": {
+          "description": "The login credentials model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResultModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - No user with such credentials.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - user is not allowed to log in for some reason.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/worklist/columns": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Gets the configuration of worklist columns.",
+        "description": "<p>Get columns information from 'tblColumns' table. Limit the records to those where ObjectName = ‘fmAccountManagement’ and ObjectVersion = 1.</p>\r\n<p>‘FieldCategory’ allows the worklist ‘show/hide’ columns to be categorized.\r\n            The ‘DataField’ links to the field of the same name in tblWorklistData which is what the views are run (query) against to return the worklist.</p>",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorklistColumnModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/configuration/defaultViewLimits": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Gets the default view limits.",
+        "description": "<p>Data is retrieved from 'tblCustom_Configuration' table.</p>",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewLimitsModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/lookup/systemValues": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Gets the system values for the given code type.",
+        "description": "<p>Values should come from 'tblComboBoxesSystemValues' table, ordered by RankOrder.</p>",
+        "parameters": [
+          {
+            "name": "codeType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SystemValueModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/lookup/icdCodes": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Gets ICD Codes filtered using provided keyword.",
+        "description": "<p>Data retrieved from 'tblICDCodeDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "The optional keyword to filter ICD codes.",
+            "schema": {
+              "type": "string",
+              "description": "The optional keyword to filter ICD codes.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/lookup/revCptCodes": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Gets Rev/CPT Codes filtered using provided keyword.",
+        "description": "<p>Data retrieved from 'RevCPTDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "The optional keyword to filter ICD codes.",
+            "schema": {
+              "type": "string",
+              "description": "The optional keyword to filter ICD codes.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views/{id}": {
+      "delete": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Deletes View with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The View Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The View Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Get View with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Updates View with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The view model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views/{viewId}/rules/{ruleId}": {
+      "delete": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Deletes View Rule with given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ruleId",
+            "in": "path",
+            "description": "The rule Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The rule Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Gets View Rule with given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ruleId",
+            "in": "path",
+            "description": "The rule Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The rule Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRuleModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Updates View Rule with given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ruleId",
+            "in": "path",
+            "description": "The rule Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The rule Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The View Rule model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewRuleModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewRuleModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewRuleModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views/fields": {
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Get list of all available view fields.",
+        "description": "<p></p>",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ViewFieldModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views/fields/{fieldId}/values": {
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Get list of values for the field with SelectionType='values'.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "fieldId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FieldValueModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views": {
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Get all current user's Views.",
+        "description": "<p></p>",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ViewModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Creates new View.",
+        "description": "<p></p>",
+        "requestBody": {
+          "description": "The view model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/views/{viewId}/rules": {
+      "get": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Gets View Rules.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ViewRuleModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "View"
+        ],
+        "summary": "Creates new View Rule.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "path",
+            "description": "The view Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The view Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The View Rule model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateViewRuleModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateViewRuleModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateViewRuleModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ViewRuleModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/revCpt/{revCptId}": {
+      "delete": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Deletes Rev/CPT Code data for the given account.",
+        "description": "<p>Data deleted from 'RevCPTDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "revCptId",
+            "in": "path",
+            "description": "The rev CPT Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The rev CPT Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Updates Rev/CPT Code data for the given account.",
+        "description": "<p>Data updated in 'RevCPTDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "revCptId",
+            "in": "path",
+            "description": "The rev CPT Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The rev CPT Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The Rev/CPT Code model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRevCptCodeModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRevCptCodeModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRevCptCodeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/chargeCodes/{chargeCodeId}": {
+      "delete": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Deletes Charge Code for the given account.",
+        "description": "<p>Data deleted from 'ChargeCodeDetails' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "chargeCodeId",
+            "in": "path",
+            "description": "The Charge Code Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Charge Code Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Updates Charge Code data for the given account.",
+        "description": "<p>Data updated in 'ChargeCodeDetails' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "chargeCodeId",
+            "in": "path",
+            "description": "The Charge Code Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Charge Code Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The Rev/CPT Code model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/payments/{payerNumber}": {
+      "delete": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Deletes given payment of the account.",
+        "description": "<p>Data deleted from 'tblPaymentDetail' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "payerNumber",
+            "in": "path",
+            "description": "The payer number.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The payer number.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Payment Detail for the given account.",
+        "description": "<p>Data retrieved from 'tblPaymentDetail' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "payerNumber",
+            "in": "path",
+            "description": "The payer number.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The payer number.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentDetailModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/icdCodes/{icdCodeId}": {
+      "delete": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Deletes ICD Code for the given account.",
+        "description": "<p>Data deleted from 'tblICDCodeDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "icdCodeId",
+            "in": "path",
+            "description": "The ICD Code Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The ICD Code Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets ICD Code with given Id.",
+        "description": "<p>Data retrieved from 'tblICDCodeDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "icdCodeId",
+            "in": "path",
+            "description": "The ICD Code Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The ICD Code Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IcdCodeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Updates ICD Code data for the given account.",
+        "description": "<p>Data updated in 'tblICDCodeDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "icdCodeId",
+            "in": "path",
+            "description": "The ICD Code Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The ICD Code Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The ICD Code model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets worklist accounts data for the selected View and filtering/paging criteria.",
+        "description": "<p>Layout parameter is used to reduce amount of data that is queried and so performance is improved. If layoutId is 'null' default layout is used.</p>\r\n<p>Each record in the response has PatientId field and list of values based on the layout configuration.</p>\r\n<p>The data is retrieved from the 'tblWorklistData' table by appliying view rules and limit criteria.</p>\r\n<p>tblColumns – This table stores all of the columns that could be shown in the worklist. Limit the records to those where ObjectName = ‘fmAccountManagement’ and ObjectVersion = 1.\r\n            The 'DataField' links to the field of the same name in 'tblWorklistData' which is what the views are run (query) against to return the worklist.</p>",
+        "parameters": [
+          {
+            "name": "viewId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "auditor",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "followUp",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "accountAge",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "hiddenRecords",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "acNumber",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortOrder"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 15,
+              "nullable": true
+            }
+          },
+          {
+            "name": "layoutId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorklistDataRowModelSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/contactInfo": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Contact information for the given account.",
+        "description": "<p>Data retrieved from 'tblWorklistData' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInfoModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Updates Contact information for the given account.",
+        "description": "<p>Data updated in 'tblWorklistData' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated Contact information.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchContactInfoModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchContactInfoModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchContactInfoModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/revCpt": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Rev/CPT Code items for the given account.",
+        "description": "<p>Data retrieved from 'RevCPTDetail' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RevCptCodeModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/chargeCodes": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Charge Code items for the given account.",
+        "description": "<p>Data retrieved from 'ChargeCodeDetails' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargeCodeModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Creates Charge Code for the given account.",
+        "description": "<p>Data created in 'ChargeCodeDetails' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The Charge Code model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChargeCodeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChargeCodeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/claimsHistory": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Claims History items for the given account.",
+        "description": "<p>Data retrieved from 'ClaimHistory', 'ClaimDetail', 'RemitHistory', 'RemitDetail' tables.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimsHistoryModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/professionalClaims": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Professional Claims for the given account.",
+        "description": "<p>Data retrieved from 'ClaimHistory', 'ClaimDetail' tables.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>\r\n<p>For this section just re-use the ClaimHistory and ClaimDetail tables. This section is just showing the same data in a different location for accounts with a service category of ‘Physician.’</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClaimHistoryItemModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/payments": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Payments and Adjustments for the given account.",
+        "description": "<p>Data retrieved from 'tblPaymentSummary' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentSummaryModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Creates new payment detail for the given patient.",
+        "description": "<p>Data added to 'tblPaymentDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentDetailModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentDetailModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentDetailModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentDetailModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/payments/other": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Other Payments for the given account.",
+        "description": "<p>Data retrieved from 'tblPaymentSummary' and 'tblPaymentDetail' tables.</p>\r\n<p>When the payer/plan code on the imported transaction does not match a payer/plan code on the account,\r\n            the transaction is displayed as an Other Payer Transaction.\r\n            These transactions are not officially committed to account but are available for review.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OtherPaymentModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Updates Other Payment details.",
+        "description": "<p>Data updated in 'tblPaymentSummary' and 'tblPaymentDetail' tables.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated other payment data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtherPaymentPatchModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtherPaymentPatchModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtherPaymentPatchModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/icdCodes": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets ICD Codes for the given account.",
+        "description": "<p>Data retrieved from 'tblICDCodeDetail' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IcdCodeModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Creates ICD Code for the given account.",
+        "description": "<p>Data created in 'tblICDCodeDetail' table.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The ICD Code model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIcdCodeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IcdCodeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/eor": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets EOR (Explanation of Reimbursement) items for the given account.",
+        "description": "<p>Data retrieved from 'tblEOR' table.</p>\r\n<p>Note: Normally, there should be one record, but technically DB schema allows multiple values for the same patient.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/detailReimb": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Detailed Reimbursement items for the given account.",
+        "description": "<p>Data retrieved from 'tblDetailReimb' table.</p>\r\n<p>Note: Normally, there should be one record, but technically DB schema allows multiple values for the same patient.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DetailReimbModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/auditStatusHistory": {
+      "get": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Gets Audit Status History for the given account.",
+        "description": "<p>The Audit Status History tab displays a history of all audit status changes for the currently selected account.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditStatusHistoryModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/accounts/{patientId}/payments/{payerNumber}/commit": {
+      "post": {
+        "tags": [
+          "WorklistAccounts"
+        ],
+        "summary": "Commits given transaction of the account.",
+        "description": "<p>Data updated in 'tblPaymentDetail' table.</p>\r\n<p>Note: Some of the field mappings clarification will be provided during development phase.</p>",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "description": "The patient Id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The patient Id.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "payerNumber",
+            "in": "path",
+            "description": "The payer number.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The payer number.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/layouts/{layoutId}": {
+      "delete": {
+        "tags": [
+          "WorklistLayouts"
+        ],
+        "summary": "Deletes Layout with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The Layout Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Layout Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "WorklistLayouts"
+        ],
+        "summary": "Gets Worklist Layout with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The Layout Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Layout Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorklistLayoutModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "WorklistLayouts"
+        ],
+        "summary": "Updates Layout with the given Id.",
+        "description": "<p></p>",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The Layout Id.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Layout Id.",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The View Rule model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    },
+    "/worklist/layouts": {
+      "get": {
+        "tags": [
+          "WorklistLayouts"
+        ],
+        "summary": "Gets all Worklist layouts for the given user.",
+        "description": "<p>Data is retrieved from 'tblColumnsCustom' and 'tblColumnsCustomDetail' tables.</p>",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorklistLayoutModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "WorklistLayouts"
+        ],
+        "summary": "Creates new Worklist Layout for the given user.",
+        "description": "<p></p>",
+        "requestBody": {
+          "description": "The Layout model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorklistLayoutModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorklistLayoutModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST - if there was problem with the request (e.g. malformed or some parameters are missing).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NOT AUTHORIZED - if the request didn't bear authentication information or the authentication information is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN - if authentication was successful, but access is denied for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND - if some entity with the given Id was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - if the request was properly formatted, but the operation failed on the server side.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginModel": {
+        "required": [
+          "dbName",
+          "password",
+          "server",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The username.",
+            "example": "john.doe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user's password.",
+            "example": "Secret!23"
+          },
+          "server": {
+            "type": "string",
+            "description": "The server to connect to."
+          },
+          "dbName": {
+            "type": "string",
+            "description": "The name of the database."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Login credentials model."
+      },
+      "LoginResultModel": {
+        "required": [
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The JWT token."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Login result model."
+      },
+      "ApiErrorModel": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Gets or sets the message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "An API error Model."
+      },
+      "WorklistColumnModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataField": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataWidth": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "objectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "readonly": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "numberFormat": {
+            "type": "string",
+            "nullable": true
+          },
+          "backColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "foreColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "multiselect": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alternatingRows": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "aggregate": {
+            "type": "string",
+            "nullable": true
+          },
+          "autocomplete": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Worklist column model."
+      },
+      "ViewLimitsModel": {
+        "required": [
+          "accountAge",
+          "auditor",
+          "followUp",
+          "hiddenRecords",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "auditor": {
+            "type": "integer",
+            "description": "The Auditor limit.",
+            "format": "int32"
+          },
+          "followUp": {
+            "type": "integer",
+            "description": "The Follow-Up limit.",
+            "format": "int32"
+          },
+          "status": {
+            "type": "integer",
+            "description": "The Status limit.",
+            "format": "int32"
+          },
+          "accountAge": {
+            "type": "integer",
+            "description": "The Account Age limit.",
+            "format": "int32"
+          },
+          "hiddenRecords": {
+            "type": "integer",
+            "description": "The Hidden Records limit.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Login credentials model."
+      },
+      "SystemValueModel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The code.",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The System Value model."
+      },
+      "FieldValueModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The codecounter value from tblComboBoxesSystemValues.",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "description": "The code from tblComboBoxesSystemValues."
+          },
+          "displayValue": {
+            "type": "string",
+            "description": "The label to display on the UI."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Field Value model."
+      },
+      "ViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The view name.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "The view description.",
+            "nullable": true
+          },
+          "limits": {
+            "$ref": "#/components/schemas/ViewLimitsModel"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Indicating whether this view is default."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The View model."
+      },
+      "CreateViewModel": {
+        "required": [
+          "description",
+          "isDefault",
+          "limits",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The view name."
+          },
+          "description": {
+            "type": "string",
+            "description": "The view description."
+          },
+          "limits": {
+            "$ref": "#/components/schemas/ViewLimitsModel"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Indicating whether this view is default."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Create View model."
+      },
+      "ViewRuleModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "fieldId": {
+            "type": "integer",
+            "description": "The field Id.",
+            "format": "int32"
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "The field Name.",
+            "nullable": true,
+            "example": "Payer1AuditFlag"
+          },
+          "value": {
+            "type": "string",
+            "description": "The Value.",
+            "nullable": true,
+            "example": "My First Contract"
+          },
+          "valueId": {
+            "type": "string",
+            "description": "The selected Id in case field type is multi-select.",
+            "nullable": true
+          },
+          "beginRange": {
+            "type": "string",
+            "description": "The begin range.",
+            "nullable": true,
+            "example": "01/01/1900"
+          },
+          "endRange": {
+            "type": "string",
+            "description": "The end range.",
+            "nullable": true,
+            "example": "12/31/1986"
+          },
+          "operand": {
+            "type": "string",
+            "description": "The operand.",
+            "nullable": true,
+            "example": "BETWEEN"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The View model."
+      },
+      "CreateViewRuleModel": {
+        "required": [
+          "fieldId"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldId": {
+            "type": "integer",
+            "description": "The field Id.",
+            "format": "int32"
+          },
+          "value": {
+            "type": "string",
+            "description": "The Value in case field type is not multi-select.",
+            "nullable": true,
+            "example": "My First Contract"
+          },
+          "valueId": {
+            "type": "string",
+            "description": "The selected Id in case field type is multi-select.",
+            "nullable": true
+          },
+          "beginRange": {
+            "type": "string",
+            "description": "The begin range.",
+            "nullable": true,
+            "example": "01/01/1900"
+          },
+          "endRange": {
+            "type": "string",
+            "description": "The end range.",
+            "nullable": true,
+            "example": "12/31/1986"
+          },
+          "operand": {
+            "type": "string",
+            "description": "The operand.",
+            "nullable": true,
+            "example": "BETWEEN"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The View model."
+      },
+      "ViewFieldModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The field name.",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "description": "The field category.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "The field Description.",
+            "nullable": true
+          },
+          "selectionType": {
+            "type": "string",
+            "description": "The field Selection Type.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The View Field model."
+      },
+      "UpdateRevCptCodeModel": {
+        "type": "object",
+        "properties": {
+          "modifier1": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifier2": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "physicianId": {
+            "type": "string",
+            "nullable": true
+          },
+          "pointOfService": {
+            "type": "string",
+            "nullable": true
+          },
+          "units": {
+            "type": "number",
+            "format": "double"
+          },
+          "charges": {
+            "type": "number",
+            "format": "double"
+          },
+          "deniedCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonBilledCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Update Rev/CPT Code model."
+      },
+      "CreateChargeCodeModel": {
+        "required": [
+          "chargeCode"
+        ],
+        "type": "object",
+        "properties": {
+          "chargeCode": {
+            "type": "string"
+          },
+          "revenueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deniedCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "cptCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "units": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonBilledCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "charges": {
+            "type": "number",
+            "format": "double"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The create Charge Code model."
+      },
+      "PaymentDetailModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "paidBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "importDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "postingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "excludedAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "adjustCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustCodeDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Payment Detail model."
+      },
+      "IcdCodeModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "icdCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "icdVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "poa": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The ICD Code model."
+      },
+      "CreateIcdCodeModel": {
+        "required": [
+          "icdCode"
+        ],
+        "type": "object",
+        "properties": {
+          "icdCode": {
+            "type": "string"
+          },
+          "icdVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "poa": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Create ICD Code model."
+      },
+      "SortOrder": {
+        "enum": [
+          "Asc",
+          "Desc"
+        ],
+        "type": "string",
+        "description": "The sort order for search operations."
+      },
+      "WorklistDataRowModel": {
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "type": "integer",
+            "description": "The patient Id.",
+            "format": "int32"
+          },
+          "actualPatientId": {
+            "type": "string",
+            "description": "The actual patient Id.",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The patient values.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Worklist Data Row model."
+      },
+      "WorklistDataRowModelSearchResult": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "The total records count.",
+            "format": "int32",
+            "example": 124
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorklistDataRowModel"
+            },
+            "description": "The items.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "An model that represents search result."
+      },
+      "ContactInfoModel": {
+        "type": "object",
+        "properties": {
+          "actualPatientId": {
+            "type": "string",
+            "nullable": true
+          },
+          "facilityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "npi": {
+            "type": "string",
+            "nullable": true
+          },
+          "payeeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "subscriberID": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuredSsn": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuredGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "insuredName": {
+            "type": "string",
+            "nullable": true
+          },
+          "admitDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dischargeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "patientType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "medicalRecordNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "socialSecurityNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "auditStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewCateogry": {
+            "type": "string",
+            "nullable": true
+          },
+          "varianceCategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "closedResult": {
+            "type": "string",
+            "nullable": true
+          },
+          "committedAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "assignedReviewer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "argument": {
+            "type": "string",
+            "nullable": true
+          },
+          "auditor": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "varCatSuggestion": {
+            "type": "string",
+            "nullable": true
+          },
+          "closedReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "pursuingReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "followUpDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "agency": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewStage": {
+            "type": "string",
+            "nullable": true
+          },
+          "responsibility": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Contact Info model."
+      },
+      "PatchContactInfoModel": {
+        "type": "object",
+        "properties": {
+          "facilityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "npi": {
+            "type": "string",
+            "nullable": true
+          },
+          "payeeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "subscriberID": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuredSsn": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuredGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "patientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "insuredName": {
+            "type": "string",
+            "nullable": true
+          },
+          "admitDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dischargeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "patientType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "medicalRecordNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "socialSecurityNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "auditStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "committedAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "argument": {
+            "type": "string",
+            "nullable": true
+          },
+          "auditor": {
+            "type": "string",
+            "nullable": true
+          },
+          "varCatSuggestion": {
+            "type": "string",
+            "nullable": true
+          },
+          "pursuingReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "followUpDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "agency": {
+            "type": "string",
+            "nullable": true
+          },
+          "responsibility": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Contact Info model."
+      },
+      "RevCptCodeModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "revenueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "revenueCodeDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "cptCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cptCodeDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifier1": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifier2": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "physicianId": {
+            "type": "string",
+            "nullable": true
+          },
+          "pointOfService": {
+            "type": "string",
+            "nullable": true
+          },
+          "units": {
+            "type": "number",
+            "format": "double"
+          },
+          "charges": {
+            "type": "number",
+            "format": "double"
+          },
+          "deniedCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonBilledCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Rev/CPT Code model."
+      },
+      "ChargeCodeModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "chargeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "revenueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deniedCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "cptCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "units": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonBilledCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "charges": {
+            "type": "number",
+            "format": "double"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Charge Code model."
+      },
+      "ClaimDetailItemModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "lineNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revenueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcpcsCptCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "charges": {
+            "type": "number",
+            "format": "double"
+          },
+          "nonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Claims Detail Item model."
+      },
+      "ClaimHistoryItemModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "patientControlNumber": {
+            "type": "string",
+            "description": "Number assigned by providers to each admission and provides a method for applying receipt of payment.",
+            "nullable": true
+          },
+          "primaryPayer": {
+            "type": "string",
+            "nullable": true
+          },
+          "billType": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimFrequencyType": {
+            "type": "string",
+            "nullable": true
+          },
+          "billingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "claimNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "statementFromDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statementToDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalNonCoveredCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "patientEstAmtDue": {
+            "type": "string",
+            "nullable": true
+          },
+          "lineCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "destinationPayer": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationPayerResponsibility": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClaimDetailItemModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Claims History Item model."
+      },
+      "RemitDetailItemModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "adjustmentReasonCodes": {
+            "type": "string",
+            "nullable": true
+          },
+          "remarkCodes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemitHistoryItemModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "provider": {
+            "type": "string",
+            "nullable": true
+          },
+          "payer": {
+            "type": "string",
+            "nullable": true
+          },
+          "billType": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimFrequencyType": {
+            "type": "string",
+            "nullable": true
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checkNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "statementFromDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statementToDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "claimStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimBilledAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "claimPaidAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "claimLevelAdjustAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "claimLevelDenialAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineLevelAdjustAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineLevelDenialAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "claimLevelAdjustReasonCodes": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimLevelRemarkCodes": {
+            "type": "string",
+            "nullable": true
+          },
+          "claimNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "remitDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RemitDetailItemModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClaimsHistoryModel": {
+        "type": "object",
+        "properties": {
+          "claims": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClaimHistoryItemModel"
+            },
+            "nullable": true
+          },
+          "remits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RemitHistoryItemModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Claims History model."
+      },
+      "PaymentSummaryModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "paidBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractName": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "estPayAllowable": {
+            "type": "number",
+            "format": "double"
+          },
+          "actualPayment": {
+            "type": "number",
+            "format": "double"
+          },
+          "writeoff": {
+            "type": "number",
+            "format": "double"
+          },
+          "balanceDue": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Payment Summary model."
+      },
+      "CreatePaymentDetailModel": {
+        "type": "object",
+        "properties": {
+          "paidBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "importDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "postingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "excludedAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "adjustCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustCodeDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Create Payment Detail model."
+      },
+      "OtherPaymentModel": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustCodeDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustmentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "postingCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "planId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "importDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Other Payment model."
+      },
+      "OtherPaymentPatchModel": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "nullable": true
+          },
+          "incrementName": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjustCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "payerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Other Payment patch model."
+      },
+      "DetailReimbModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "codeType": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "item": {
+            "type": "string",
+            "nullable": true
+          },
+          "servicePayOrGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "adjustedCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "units": {
+            "type": "number",
+            "format": "double"
+          },
+          "reimbMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "ppc": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expectedReimburse": {
+            "type": "number",
+            "format": "double"
+          },
+          "termsDiff": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Detailed Reimbursement model."
+      },
+      "AuditStatusHistoryModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "auditStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateSet": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "changedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "currentAuditor": {
+            "type": "string",
+            "nullable": true
+          },
+          "eventDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "daysElapsed": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Audit Status History model."
+      },
+      "WorklistColumnLayoutModel": {
+        "required": [
+          "fieldName",
+          "isVisible",
+          "location",
+          "width"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "The corresponding field name."
+          },
+          "location": {
+            "type": "integer",
+            "description": "The location (index) of the column in the grid.",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "description": "The column width.",
+            "format": "int32"
+          },
+          "isVisible": {
+            "type": "boolean",
+            "description": "Indicates whether field is visible in the grid."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Worklist Column Layout model."
+      },
+      "WorklistLayoutModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id of the model.",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The layout name.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "The layout description.",
+            "nullable": true
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Indicates whether this layout is default."
+          },
+          "userId": {
+            "type": "integer",
+            "description": "The id of layout owner",
+            "format": "int32",
+            "example": 1
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorklistColumnLayoutModel"
+            },
+            "description": "The layout columns.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Worklist Layout model."
+      },
+      "CreateWorklistLayoutModel": {
+        "required": [
+          "columns",
+          "isDefault",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The layout name."
+          },
+          "description": {
+            "type": "string",
+            "description": "The layout description.",
+            "nullable": true
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Indicates whether this layout is default."
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorklistColumnLayoutModel"
+            },
+            "description": "The layout columns."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Worklist Layout model."
+      }
+    },
+    "securitySchemes": {
+      "jwt_bearer": {
+        "type": "http",
+        "description": "Authentication using JWT Token in header.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

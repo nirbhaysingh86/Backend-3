@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 16145,
+    "RevenueCode": "0320",
+    "RevenueCodeDescription": "Radiology - Diagnostic",
+    "TransactionId": "032071020PDH20161025",
+    "CptCode": "71020",
+    "CptCodeDescription": "Chest x-ray 2vw frontal&latl",
+    "ServiceDate": "10/25/2016 00:00:00",
+    "Modifier1": "PD",
+    "Modifier2": null,
+    "ServiceType": "H",
+    "PhysicianId": "",
+    "PointOfService": "",
+    "Units": 1.0,
+    "Charges": 360.0,
+    "DeniedCharges": 0.0,
+    "NonCoveredCharges": 0.0,
+    "NonBilledCharges": 0.0,
+    "Cost": 0.0
+  },
+  {
+    "Id": 16344,
+    "RevenueCode": "0730",
+    "RevenueCodeDescription": "EKG/ECG",
+    "TransactionId": "073093005PDH20161025",
+    "CptCode": "93005",
+    "CptCodeDescription": "Electrocardiogram tracing",
+    "ServiceDate": "10/25/2016 00:00:00",
+    "Modifier1": "PD",
+    "Modifier2": null,
+    "ServiceType": "H",
+    "PhysicianId": "",
+    "PointOfService": "",
+    "Units": 1.0,
+    "Charges": 635.0,
+    "DeniedCharges": 0.0,
+    "NonCoveredCharges": 0.0,
+    "NonBilledCharges": 0.0,
+    "Cost": 0.0
+  }
+]

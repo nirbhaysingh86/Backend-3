@@ -1,0 +1,15 @@
+[
+  {
+    "Id": 2,
+    "Name": "All Name",
+    "Description": "All Desc",
+    "Limits": {
+      "Auditor": 0,
+      "FollowUp": 0,
+      "Status": 1,
+      "AccountAge": 0,
+      "HiddenRecords": 1
+    },
+    "IsDefault": true
+  }
+]

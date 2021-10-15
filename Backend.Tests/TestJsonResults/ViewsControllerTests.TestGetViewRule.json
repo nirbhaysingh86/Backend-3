@@ -1,0 +1,10 @@
+{
+  "Id": 6,
+  "FieldId": 2,
+  "fieldName": "Name_ContractID",
+  "Value": "My First Contract",
+  "ValueId": "1",
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "IN"
+}

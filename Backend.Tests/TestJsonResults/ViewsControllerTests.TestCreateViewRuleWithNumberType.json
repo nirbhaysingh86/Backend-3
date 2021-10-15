@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 11,
+  "fieldName": "PayerPayment",
+  "Value": "12",
+  "ValueId": null,
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": ">"
+}

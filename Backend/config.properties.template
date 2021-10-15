@@ -1,0 +1,3 @@
+AZURE_DATABASE_USERID=<sqlserver user id>
+AZURE_DATABASE_PASSWORD=<sqlserver password>
+APPINSIGHTS_INSTRUMENTATIONKEY=<application insights instrumentation key >

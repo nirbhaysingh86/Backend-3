@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 4,
+  "fieldName": "ServiceCode",
+  "Value": "Inpatient",
+  "ValueId": "201",
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "NOT IN"
+}

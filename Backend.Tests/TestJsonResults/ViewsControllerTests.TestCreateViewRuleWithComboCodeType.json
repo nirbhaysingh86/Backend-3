@@ -1,0 +1,12 @@
+{
+  "Id": 11,
+  "FieldId": 18,
+  "Value": "INPATIENT",
+  "Values": [
+    "16876"
+  ],
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "IN",
+  "Operand2": null
+}

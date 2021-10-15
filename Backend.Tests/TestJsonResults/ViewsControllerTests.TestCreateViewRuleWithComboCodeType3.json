@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 179,
+  "fieldName": "DischargeCodeLink",
+  "Value": "1959-DC TO HOME OR SELF CARE (RO DISCHA)",
+  "ValueId": "52",
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "IN"
+}

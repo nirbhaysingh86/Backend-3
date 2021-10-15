@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 251,
+  "fieldName": "BillType",
+  "Value": "111",
+  "ValueId": "27",
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "IN"
+}

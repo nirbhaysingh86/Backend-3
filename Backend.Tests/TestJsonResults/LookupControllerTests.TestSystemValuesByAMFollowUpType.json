@@ -1,0 +1,22 @@
+[
+  {
+    "Code": 0,
+    "Description": "All Records"
+  },
+  {
+    "Code": 1,
+    "Description": "Past Due"
+  },
+  {
+    "Code": 2,
+    "Description": "Due Today or Past Due"
+  },
+  {
+    "Code": 3,
+    "Description": "Due Within 1 Week"
+  },
+  {
+    "Code": 4,
+    "Description": "Due Within 1 Month"
+  }
+]

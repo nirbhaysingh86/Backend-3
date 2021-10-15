@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 19,
+  "fieldName": "CalcCode",
+  "Value": "start",
+  "ValueId": null,
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "BEGINS WITH"
+}

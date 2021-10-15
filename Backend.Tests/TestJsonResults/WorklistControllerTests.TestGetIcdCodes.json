@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1,
+    "IcdCode": "Z01.810",
+    "IcdVersion": 10,
+    "Description": "Encounter for preprocedural cardiovascular examination",
+    "ServiceDate": null,
+    "Rank": 3,
+    "TransactionId": "Z01.81020161025",
+    "Poa": "Y"
+  },
+  {
+    "Id": 2,
+    "IcdCode": "R94.31",
+    "IcdVersion": 10,
+    "Description": "Abnormal electrocardiogram [ECG] [EKG]",
+    "ServiceDate": null,
+    "Rank": 2,
+    "TransactionId": "R94.3120161025",
+    "Poa": "Y"
+  },
+  {
+    "Id": 3,
+    "IcdCode": "Q21.0",
+    "IcdVersion": 10,
+    "Description": "Ventricular septal defect",
+    "ServiceDate": null,
+    "Rank": 1,
+    "TransactionId": "Q21.020161025",
+    "Poa": "Y"
+  }
+]

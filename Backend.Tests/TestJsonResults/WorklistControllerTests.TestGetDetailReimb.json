@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 1,
+    "CodeType": "Ancillary",
+    "ServiceType": null,
+    "Item": null,
+    "ServicePayOrGroup": "Ancillary",
+    "ServiceDate": "10/25/2016 00:00:00",
+    "AdjustedCharges": 995.0,
+    "Units": 0.0,
+    "ReimbMethod": null,
+    "Ppc": null,
+    "Rate": null,
+    "ExpectedReimburse": 348.25,
+    "TermsDiff": 0.0
+  }
+]

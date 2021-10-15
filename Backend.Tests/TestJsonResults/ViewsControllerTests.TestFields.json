@@ -1,0 +1,177 @@
+[
+  {
+    "Id": 8,
+    "Name": "AdjTotalCharges",
+    "Category": "Billing Info",
+    "Description": "Adj Total Charges",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 26,
+    "Name": "AdjTotalDays",
+    "Category": "Billing Info",
+    "Description": "LOS",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 5,
+    "Name": "AdmissionDate",
+    "Category": "Billing Info",
+    "Description": "Admission Date",
+    "SelectionType": "DateRange"
+  },
+  {
+    "Id": 7,
+    "Name": "BillingDate",
+    "Category": "Billing Info",
+    "Description": "Billing Date",
+    "SelectionType": "DateRange"
+  },
+  {
+    "Id": 251,
+    "Name": "BillType",
+    "Category": "Billing Info",
+    "Description": "Last Bill Type",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 19,
+    "Name": "CalcCode",
+    "Category": "Calculations",
+    "Description": "Calculation Code",
+    "SelectionType": "Text"
+  },
+  {
+    "Id": 15,
+    "Name": "ContractAllowance",
+    "Category": "Calculations",
+    "Description": "Calculated Contractual",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 17,
+    "Name": "ContractualVariance",
+    "Category": "Calculations",
+    "Description": "Contractual Variance",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 179,
+    "Name": "DischargeCodeLink",
+    "Category": "Billing Info",
+    "Description": "Discharge Status",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 6,
+    "Name": "DischargeDate",
+    "Category": "Billing Info",
+    "Description": "Discharge Date",
+    "SelectionType": "DateRange"
+  },
+  {
+    "Id": 10,
+    "Name": "EstPayerPortion",
+    "Category": "Payment/Adjustment",
+    "Description": "Payer Est. Payment",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 9,
+    "Name": "ExpectedReimburse",
+    "Category": "Calculations",
+    "Description": "Expected Reimbursement",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 16,
+    "Name": "HospitalContractual",
+    "Category": "Payment/Adjustment",
+    "Description": "Payer Contractual",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 72,
+    "Name": "ImportDate",
+    "Category": "Calculations",
+    "Description": "Last Import Date",
+    "SelectionType": "DateTimeRange"
+  },
+  {
+    "Id": 2,
+    "Name": "Name_ContractID",
+    "Category": "Billing Info",
+    "Description": "Contract Name",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 108,
+    "Name": "PatFinClass",
+    "Category": "Billing Info",
+    "Description": "Financial Class - Patient",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 18,
+    "Name": "PatTypeCodeLink",
+    "Category": "Billing Info",
+    "Description": "Patient Type",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 27,
+    "Name": "Payer1AuditFlag",
+    "Category": "Audit Tracking",
+    "Description": "Payer 1 Audit Status",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 13,
+    "Name": "Payer1BalanceDue",
+    "Category": "Calculations",
+    "Description": "Payer Balance Due",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 11,
+    "Name": "PayerPayment",
+    "Category": "Payment/Adjustment",
+    "Description": "Payer Payment",
+    "SelectionType": "Number"
+  },
+  {
+    "Id": 12,
+    "Name": "PayerPaymentDate",
+    "Category": "Payment/Adjustment",
+    "Description": "Payer Payment Date",
+    "SelectionType": "DateRange"
+  },
+  {
+    "Id": 1,
+    "Name": "PaymentStatus",
+    "Category": "Calculations",
+    "Description": "Payer Payment Status",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 35,
+    "Name": "PctContractualToCharges",
+    "Category": "Calculations",
+    "Description": "% Contractual to Charges",
+    "SelectionType": "Percent"
+  },
+  {
+    "Id": 4,
+    "Name": "ServiceCode",
+    "Category": "Billing Info",
+    "Description": "Service Category",
+    "SelectionType": "Values"
+  },
+  {
+    "Id": 14,
+    "Name": "TotalBalanceDue",
+    "Category": "Calculations",
+    "Description": "Total Balance Due",
+    "SelectionType": "Number"
+  }
+]

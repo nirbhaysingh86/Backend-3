@@ -1,0 +1,54 @@
+[
+  {
+    "Id": 6,
+    "FieldId": 2,
+    "Value": null,
+    "Values": [
+      "1"
+    ],
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "IN",
+    "Operand2": null
+  },
+  {
+    "Id": 7,
+    "FieldId": 5,
+    "Value": null,
+    "Values": null,
+    "BeginRange": "01/01/1900",
+    "EndRange": "12/31/1986",
+    "Operand": "BETWEEN",
+    "Operand2": null
+  },
+  {
+    "Id": 8,
+    "FieldId": 11,
+    "Value": "0",
+    "Values": null,
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": ">",
+    "Operand2": null
+  },
+  {
+    "Id": 9,
+    "FieldId": 19,
+    "Value": "5441",
+    "Values": null,
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "BEGINS WITH",
+    "Operand2": "5664"
+  },
+  {
+    "Id": 10,
+    "FieldId": 26,
+    "Value": "PRETERM LABOR",
+    "Values": null,
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "NOT IN",
+    "Operand2": null
+  }
+]

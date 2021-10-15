@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 5,
+  "fieldName": "AdmissionDate",
+  "Value": null,
+  "ValueId": null,
+  "BeginRange": "01/01/1900",
+  "EndRange": "12/31/1986",
+  "Operand": "BETWEEN"
+}

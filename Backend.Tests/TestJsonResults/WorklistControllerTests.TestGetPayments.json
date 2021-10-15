@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 3475203,
+    "PaidBy": "Patient",
+    "PayerId": "N/A",
+    "PayerName": "N/A",
+    "ContractName": "N/A",
+    "PaymentDate": null,
+    "EstPayAllowable": 0.0,
+    "ActualPayment": 0.0,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  },
+  {
+    "Id": 3475203,
+    "PaidBy": "Payer 1",
+    "PayerId": "2000007",
+    "PayerName": "Payer Name",
+    "ContractName": "Contract Name",
+    "PaymentDate": "11/23/2016 00:00:00",
+    "EstPayAllowable": 348.25,
+    "ActualPayment": 348.25,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  },
+  {
+    "Id": 3475203,
+    "PaidBy": "Payer 2",
+    "PayerId": "N/A",
+    "PayerName": "N/A",
+    "ContractName": "N/A",
+    "PaymentDate": null,
+    "EstPayAllowable": 0.0,
+    "ActualPayment": 0.0,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  },
+  {
+    "Id": 3475203,
+    "PaidBy": "Payer 3",
+    "PayerId": "N/A",
+    "PayerName": "N/A",
+    "ContractName": "N/A",
+    "PaymentDate": null,
+    "EstPayAllowable": 0.0,
+    "ActualPayment": 0.0,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  },
+  {
+    "Id": 3475203,
+    "PaidBy": "Payer 4",
+    "PayerId": "N/A",
+    "PayerName": "N/A",
+    "ContractName": "N/A",
+    "PaymentDate": null,
+    "EstPayAllowable": 0.0,
+    "ActualPayment": 0.0,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  },
+  {
+    "Id": 3475203,
+    "PaidBy": "Other Payer",
+    "PayerId": "N/A",
+    "PayerName": "N/A",
+    "ContractName": "Contract Example 773",
+    "PaymentDate": "11/23/2016 00:00:00",
+    "EstPayAllowable": 100.0,
+    "ActualPayment": 100.0,
+    "Writeoff": 0.0,
+    "BalanceDue": 0.0
+  }
+]

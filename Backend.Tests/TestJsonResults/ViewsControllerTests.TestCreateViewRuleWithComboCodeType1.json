@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 18,
+  "fieldName": "PatTypeCodeLink",
+  "Value": "INPATIENT",
+  "ValueId": "131",
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": "IN"
+}

@@ -1,0 +1,10 @@
+{
+  "Id": 11,
+  "FieldId": 35,
+  "fieldName": "PctContractualToCharges",
+  "Value": "0.12",
+  "ValueId": null,
+  "BeginRange": null,
+  "EndRange": null,
+  "Operand": ">"
+}

@@ -1,0 +1,23 @@
+{
+  "Id": 3,
+  "Name": "new layout",
+  "Description": "description",
+  "IsDefault": false,
+  "UserId": 2,
+  "Columns": [
+    {
+      "Id": 12,
+      "FieldName": "PaymentStatus",
+      "Location": 1,
+      "Width": 50,
+      "IsVisible": true
+    },
+    {
+      "Id": 13,
+      "FieldName": "PayerPayment",
+      "Location": 2,
+      "Width": 50,
+      "IsVisible": false
+    }
+  ]
+}

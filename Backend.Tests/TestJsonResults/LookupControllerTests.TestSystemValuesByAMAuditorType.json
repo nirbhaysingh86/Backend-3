@@ -1,0 +1,14 @@
+[
+  {
+    "Code": 0,
+    "Description": "All Records"
+  },
+  {
+    "Code": 1,
+    "Description": "Assigned To Me"
+  },
+  {
+    "Code": 2,
+    "Description": "Unassigned"
+  }
+]

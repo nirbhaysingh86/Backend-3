@@ -1,0 +1,89 @@
+[
+  {
+    "Id": 2,
+    "Name": "Default",
+    "Description": null,
+    "IsDefault": true,
+    "UserId": 2,
+    "Columns": [
+      {
+        "Id": 1,
+        "FieldName": "PayerPayment",
+        "Location": 0,
+        "Width": 50,
+        "IsVisible": true
+      },
+      {
+        "Id": 2,
+        "FieldName": "ActualPatientID",
+        "Location": 1,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 3,
+        "FieldName": "Name_PatientName",
+        "Location": 2,
+        "Width": 150,
+        "IsVisible": true
+      },
+      {
+        "Id": 4,
+        "FieldName": "PaymentStatus",
+        "Location": 3,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 5,
+        "FieldName": "Name_ContractID",
+        "Location": 4,
+        "Width": 200,
+        "IsVisible": true
+      },
+      {
+        "Id": 6,
+        "FieldName": "PayerID",
+        "Location": 5,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 7,
+        "FieldName": "ServiceCode",
+        "Location": 6,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 8,
+        "FieldName": "AdmissionDate",
+        "Location": 7,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 9,
+        "FieldName": "DischargeDate",
+        "Location": 8,
+        "Width": 100,
+        "IsVisible": true
+      },
+      {
+        "Id": 10,
+        "FieldName": "BillingDate",
+        "Location": 9,
+        "Width": 100,
+        "IsVisible": true
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "New",
+    "Description": "description",
+    "IsDefault": false,
+    "UserId": 2,
+    "Columns": []
+  }
+]

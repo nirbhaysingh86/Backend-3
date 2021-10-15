@@ -1,0 +1,11 @@
+{
+  "Id": 6,
+  "PaidBy": "Other Payer",
+  "PaymentType": "Miscellaneous",
+  "ImportDate": "12/12/2012 00:00:00",
+  "PostingDate": "12/12/2012 00:00:00",
+  "Amount": 100.0,
+  "ExcludedAmount": 0.0,
+  "AdjustCode": "202",
+  "AdjustCodeDescription": "string"
+}

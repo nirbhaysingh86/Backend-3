@@ -1,0 +1,26 @@
+[
+  {
+    "Code": 0,
+    "Description": "All Records"
+  },
+  {
+    "Code": 1,
+    "Description": "Within 1 Year"
+  },
+  {
+    "Code": 2,
+    "Description": "Within 2 Years"
+  },
+  {
+    "Code": 3,
+    "Description": "Within 3 Years"
+  },
+  {
+    "Code": 4,
+    "Description": "Within 4 Years"
+  },
+  {
+    "Code": 5,
+    "Description": "Within 5 Years"
+  }
+]

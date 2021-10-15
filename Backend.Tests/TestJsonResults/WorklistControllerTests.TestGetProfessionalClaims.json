@@ -1,0 +1,43 @@
+[
+  {
+    "Id": 1,
+    "PatientControlNumber": null,
+    "PrimaryPayer": "Payer Name",
+    "BillType": "131",
+    "ClaimFrequencyType": "Admit thru Discharge",
+    "BillingDate": "11/01/2016 00:00:00",
+    "ClaimNumber": null,
+    "StatementFromDate": "10/25/2016 00:00:00",
+    "StatementToDate": "10/25/2016 00:00:00",
+    "TotalCharges": 995.0,
+    "TotalNonCoveredCharges": 0.0,
+    "PatientEstAmtDue": null,
+    "LineCount": 2,
+    "DestinationPayer": "Other Payer Name",
+    "DestinationPayerResponsibility": "Primary",
+    "ClaimDetails": [
+      {
+        "Id": 1,
+        "LineNumber": 1,
+        "Date": "10/25/2016 00:00:00",
+        "RevenueCode": "0320",
+        "HcpcsCptCode": "71020",
+        "Modifier": "00",
+        "Quantity": 1.0,
+        "Charges": 360.0,
+        "NonCoveredCharges": 0.0
+      },
+      {
+        "Id": 2,
+        "LineNumber": 2,
+        "Date": "10/25/2016 00:00:00",
+        "RevenueCode": "0730",
+        "HcpcsCptCode": "93005",
+        "Modifier": "00",
+        "Quantity": 1.0,
+        "Charges": 635.0,
+        "NonCoveredCharges": 0.0
+      }
+    ]
+  }
+]

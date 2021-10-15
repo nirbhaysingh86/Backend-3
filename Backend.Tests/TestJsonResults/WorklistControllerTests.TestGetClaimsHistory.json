@@ -1,0 +1,81 @@
+{
+  "Claims": [
+    {
+      "Id": 1,
+      "PatientControlNumber": null,
+      "PrimaryPayer": "Payer Name",
+      "BillType": "131",
+      "ClaimFrequencyType": "Admit thru Discharge",
+      "BillingDate": "11/01/2016 00:00:00",
+      "ClaimNumber": null,
+      "StatementFromDate": "10/25/2016 00:00:00",
+      "StatementToDate": "10/25/2016 00:00:00",
+      "TotalCharges": 995.0,
+      "TotalNonCoveredCharges": 0.0,
+      "PatientEstAmtDue": null,
+      "LineCount": 2,
+      "DestinationPayer": "Other Payer Name",
+      "DestinationPayerResponsibility": "Primary",
+      "ClaimDetails": [
+        {
+          "Id": 1,
+          "LineNumber": 1,
+          "Date": "10/25/2016 00:00:00",
+          "RevenueCode": "0320",
+          "HcpcsCptCode": "71020",
+          "Modifier": "00",
+          "Quantity": 1.0,
+          "Charges": 360.0,
+          "NonCoveredCharges": 0.0
+        },
+        {
+          "Id": 2,
+          "LineNumber": 2,
+          "Date": "10/25/2016 00:00:00",
+          "RevenueCode": "0730",
+          "HcpcsCptCode": "93005",
+          "Modifier": "00",
+          "Quantity": 1.0,
+          "Charges": 635.0,
+          "NonCoveredCharges": 0.0
+        }
+      ]
+    }
+  ],
+  "Remits": [
+    {
+      "Id": 1,
+      "Provider": "My Facility",
+      "Payer": null,
+      "BillType": null,
+      "ClaimFrequencyType": null,
+      "EffectiveDate": "11/14/2016 00:00:00",
+      "CheckNumber": "081000605386671",
+      "StatementFromDate": "01/01/0001 00:00:00",
+      "StatementToDate": "01/01/0001 00:00:00",
+      "ClaimStatus": "1",
+      "ClaimBilledAmount": 995.0,
+      "ClaimPaidAmount": 348.25,
+      "ClaimLevelAdjustAmount": 0.0,
+      "ClaimLevelDenialAmount": 0.0,
+      "LineLevelAdjustAmount": 646.75,
+      "LineLevelDenialAmount": 0.0,
+      "LineCount": 2,
+      "ClaimLevelAdjustReasonCodes": null,
+      "ClaimLevelRemarkCodes": null,
+      "ClaimNumber": "16307E12324",
+      "RemitDetails": [
+        {
+          "Id": 1,
+          "AdjustmentReasonCodes": "45",
+          "RemarkCodes": null
+        },
+        {
+          "Id": 2,
+          "AdjustmentReasonCodes": "45",
+          "RemarkCodes": null
+        }
+      ]
+    }
+  ]
+}

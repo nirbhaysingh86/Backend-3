@@ -1,0 +1,61 @@
+image: mcr.microsoft.com/dotnet/core/sdk:3.1
+
+stages:
+  - build
+  - test
+    
+build:
+  stage: build
+  script:
+    - 'cd Backend'
+    - 'dotnet publish 
+      --configuration Release
+      --output ../artifacts' 
+  artifacts:
+    paths:
+      - artifacts/** 
+
+build-docker-image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+     DOCKER_DRIVER: overlay
+     CI_REGISTRY_USER: $CI_REGISTRY_USER
+     CI_REGISTRY_PASSWORD: $CI_REGISTRY_PASSWORD
+     CI_REGISTRY: $CI_REGISTRY
+     CI_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+  only:
+    - develop
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" --password-stdin
+    - cd Backend 
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+
+test:
+  services:    
+    - name: mcr.microsoft.com/mssql/server:2017-latest
+      alias: db   
+  variables:
+    DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    ASPNETCORE_ENVIRONMENT: CI
+    ACCEPT_EULA: "Y"
+    SA_PASSWORD: myPass123
+  stage: test
+  before_script:
+   - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+  script:
+    - dotnet test --logger "junit" --collect:"XPlat Code Coverage"
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:coverage" -reportTypes:TextSummary;
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:coverage" -reportTypes:Html;
+    - cat ./coverage/Summary.txt
+    - echo 'End Summary'
+  coverage: /Line coverage[\s\S].+%/
+  artifacts:
+    paths:
+      - coverage/
+    reports:
+      junit:
+        - '*.Tests/TestResults/TestResults.xml'

@@ -1,0 +1,15 @@
+coverage.json
+coverage
+bin
+obj
+.vs
+.vscode
+artifacts
+coverage.cobertura.xml
+publish
+
+
+.config
+TestResults
+config.properties
+.idea

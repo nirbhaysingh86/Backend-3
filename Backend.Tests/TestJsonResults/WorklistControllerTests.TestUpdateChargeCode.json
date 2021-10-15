@@ -1,0 +1,15 @@
+{
+  "Id": 1,
+  "ChargeCode": "charge code 1",
+  "RevenueCode": "revenue",
+  "DeniedCharges": 41654.5,
+  "Description": "description",
+  "CptCode": "cpt code",
+  "NonCoveredCharges": 56.22,
+  "TransactionId": "123",
+  "Units": 452,
+  "NonBilledCharges": 71.1,
+  "ServiceDate": "12/12/2012 00:00:00",
+  "Charges": 85.0,
+  "Cost": 985.125
+}

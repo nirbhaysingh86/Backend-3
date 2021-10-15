@@ -1,0 +1,13 @@
+[
+  {
+    "AccountNumber": "65245453",
+    "AdjustCode": "333",
+    "AdjustCodeDescription": "INSURANCE PAYMENT (INSURANCE)",
+    "AdjustmentType": "15",
+    "PostingCode": "333",
+    "PayerId": "20012900",
+    "PlanId": null,
+    "Amount": 100.0,
+    "ImportDate": "11/25/2016 01:29:43"
+  }
+]

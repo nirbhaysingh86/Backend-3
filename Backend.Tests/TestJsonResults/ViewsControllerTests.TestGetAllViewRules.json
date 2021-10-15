@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 6,
+    "FieldId": 2,
+    "fieldName": "Name_ContractID",
+    "Value": "My First Contract",
+    "ValueId": "1",
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "IN"
+  },
+  {
+    "Id": 7,
+    "FieldId": 5,
+    "fieldName": "AdmissionDate",
+    "Value": null,
+    "ValueId": null,
+    "BeginRange": "01/01/1900",
+    "EndRange": "12/31/1986",
+    "Operand": "BETWEEN"
+  },
+  {
+    "Id": 8,
+    "FieldId": 11,
+    "fieldName": "PayerPayment",
+    "Value": "0",
+    "ValueId": null,
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "GREATER THAN"
+  },
+  {
+    "Id": 9,
+    "FieldId": 19,
+    "fieldName": "CalcCode",
+    "Value": "5441",
+    "ValueId": null,
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "STARTS WITH"
+  },
+  {
+    "Id": 10,
+    "FieldId": 26,
+    "fieldName": "AdjTotalDays",
+    "Value": "5632",
+    "ValueId": "5631",
+    "BeginRange": null,
+    "EndRange": null,
+    "Operand": "LESS THAN"
+  }
+]

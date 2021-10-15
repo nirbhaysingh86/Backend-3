@@ -1,0 +1,10 @@
+[
+  {
+    "Code": 0,
+    "Description": "Exclude Closed"
+  },
+  {
+    "Code": 1,
+    "Description": "Include All"
+  }
+]
