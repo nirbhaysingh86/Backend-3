@@ -191,7 +191,7 @@ namespace PMMC.Services
         /// The get payment details sql
         /// </summary>
         internal const string GetOtherPaymentsSql =
-            "SELECT [pd].[Entity] AS [PaidBy],[wd].[ActualPatientID] AS [AccountNumber],[pd].[AdjustCode] AS [AdjustCode],[pd].[AdjustCodeDesc] AS [AdjustCodeDescription],[pd].[AdjustType] AS [AdjustmentType],[pd].[AdjustCode] AS [PostingCode],[wd].[PayerPlanCode] AS [PayerId],[pd].[Amount] AS [Amount],[pd].[DateAdded] AS [ImportDate] FROM [dbo].[tblWorklistData] [wd] LEFT JOIN [dbo].[tblPaymentDetail] [pd] ON [pd].[PatientID]=[wd].[PatientID] WHERE [wd].[PatientID]=@patientId AND [wd].[PayerCodeLink]<>[pd].[PayerCodeLink]";
+            "SELECT [pd].[Entity] AS [PaidBy],[wd].[ActualPatientID] AS [AccountNumber],[pd].[AdjustCode] AS [AdjustCode],[pd].[AdjustCodeDesc] AS [AdjustCodeDescription],[pd].[AdjustType] AS [AdjustmentType],[pd].[AdjustCode] AS [PostingCode],[wd].[PayerPlanCode] AS [PayerId],[pd].[Amount] AS [Amount],[pd].[DateAdded] AS [ImportDate],[ps].PayerNumber FROM [dbo].[tblWorklistData] [wd] LEFT JOIN [dbo].[tblPaymentDetail] [pd] ON [pd].[PatientID]=[wd].[PatientID]  LEFT JOIN [dbo].tblPaymentSummary [ps] ON [ps].[PatientID]=[ps].[PatientID]  and ps.PayerNumberLabel=pd.Entity WHERE [wd].[PatientID]=@patientId AND [wd].[PayerCodeLink]<>[pd].[PayerCodeLink]";
 
         /// <summary>
         /// The get payment details sql
