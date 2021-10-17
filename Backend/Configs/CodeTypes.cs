@@ -45,6 +45,11 @@ namespace PMMC.Configs
         public string HiddenRecords { get; set; }
 
         public string PaymentStatus { get; set; }
+        public string ServiceCode { get; set; }
+        public string ReviewCategory { get; set; }
+        public string ReviewReason { get; set; }
+        public string VarianceCategory { get; set; }
+        
 
         /// <summary>
         /// Check value is valid code type
@@ -54,7 +59,7 @@ namespace PMMC.Configs
         public bool ContainsValue(string value)
         {
             return Auditor.Equals(value) || FollowUp.Equals(value) || Status.Equals(value) ||
-                   AccountAge.Equals(value) || HiddenRecords.Equals(value)|| PaymentStatus.Equals(value);
+                   AccountAge.Equals(value) || HiddenRecords.Equals(value)|| PaymentStatus.Equals(value) || ServiceCode.Equals(value) || ReviewCategory.Equals(value) || ReviewReason.Equals(value) || VarianceCategory.Equals(value);
         }
 
         /// <summary>
@@ -63,7 +68,7 @@ namespace PMMC.Configs
         /// <returns>all possible valid code types</returns>
         public string[] Values()
         {
-            return new string[] {Auditor, FollowUp, Status, AccountAge, HiddenRecords, PaymentStatus };
+            return new string[] {Auditor, FollowUp, Status, AccountAge, HiddenRecords, PaymentStatus, ServiceCode, ReviewCategory , ReviewReason, VarianceCategory };
         }
     }
 }
