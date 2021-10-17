@@ -221,7 +221,7 @@ namespace PMMC.Controllers
         /// <returns>match contact info by patient id</returns>
         [HttpGet]
         [Route("accounts/{patientId}/contactInfo")]
-        public ContactInfo GetContactInfo([FromRoute] int patientId)
+        public IEnumerable<ContactInfo> GetContactInfo([FromRoute] int patientId)
         {
             return _logger.Process(() => _worklistAccountService.GetContactInfo(patientId, CurrentUser), "get contact info",
                 parameters: new object[] { patientId });

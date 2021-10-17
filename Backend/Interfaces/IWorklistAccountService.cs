@@ -81,7 +81,7 @@ namespace PMMC.Interfaces
         /// <param name="patientId">the patient id</param>
         /// <param name="user">the jwt user</param>
         /// <returns>match contact info by patient id</returns>
-        ContactInfo GetContactInfo(int patientId, JwtUser user);
+        IEnumerable<ContactInfo> GetContactInfo(int patientId, JwtUser user);
 
         /// <summary>
         /// Update patient's contact information

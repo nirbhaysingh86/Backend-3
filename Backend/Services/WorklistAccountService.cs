@@ -173,7 +173,7 @@ namespace PMMC.Services
         /// The get payment details sql
         /// </summary>
         internal const string GetPaymentDetailsSql =
-            "SELECT [pd].[IncrementId] AS [Id],[pd].[Entity] AS [PaidBy],[pd].[IncrementName] AS [PaymentType],[pd].[DateAdded] AS [ImportDate],[pd].[PostingDate] AS [PostingDate],[pd].[Amount] AS [Amount],[pd].[ExcludedAmount] AS [ExcludedAmount],[pd].[AdjustCode] AS [AdjustCode],[pd].[AdjustCodeDesc] AS [AdjustCodeDescription] FROM [dbo].[tblPaymentSummary] [ps] LEFT JOIN [dbo].[tblPaymentDetail] [pd] ON [pd].[PatientID]=[ps].[PatientID] AND [pd].[Entity]=[ps].[PayerNumberLabel] LEFT JOIN [dbo].[tblWorklistData] [wd] ON [wd].[PatientID]=[pd].[PatientID] WHERE [ps].[PatientID]=@patientId AND [ps].[PayerNumber]=@payerNumber AND [pd].[PayerCodeLink]=[wd].[PayerCodeLink]";
+            "SELECT [pd].[IncrementId] AS [Id],[pd].[Entity] AS [PaidBy],[pd].[IncrementName] AS [PaymentType],[pd].[DateAdded] AS [ImportDate],[pd].[PostingDate] AS [PostingDate],[pd].[Amount] AS [Amount],[pd].[ExcludedAmount] AS [ExcludedAmount],[pd].[AdjustCode] AS [AdjustCode],[pd].[AdjustCodeDesc] AS [AdjustCodeDescription],ps.PayerNumber FROM [dbo].[tblPaymentSummary] [ps] LEFT JOIN [dbo].[tblPaymentDetail] [pd] ON [pd].[PatientID]=[ps].[PatientID] AND [pd].[Entity]=[ps].[PayerNumberLabel] LEFT JOIN [dbo].[tblWorklistData] [wd] ON [wd].[PatientID]=[pd].[PatientID] WHERE [ps].[PatientID]=@patientId AND [ps].[PayerNumber]=@payerNumber AND [pd].[PayerCodeLink]=[wd].[PayerCodeLink]";
 
         /// <summary>
         /// The validate other payment sql
@@ -618,13 +618,19 @@ namespace PMMC.Services
         /// <param name="patientId">the patient id</param>
         /// <param name="user">the jwt user</param>
         /// <returns>match contact info by patient id</returns>
-        public ContactInfo GetContactInfo(int patientId, JwtUser user)
+        public IEnumerable<ContactInfo> GetContactInfo(int patientId, JwtUser user)
         {
             return _logger.Process(() =>
             {
-                return FindValidContactInfo(patientId, user);
-            }, "get contact info for the patient id",
-                parameters: new object[] { patientId, user });
+                Helper.ValidateArgumentNotNull(user, nameof(user));
+                // validate patient exists
+                ValidatePatientId2(patientId, user);
+                return ProcessWithDb((conn) =>
+                {
+                    return conn.Query<ContactInfo>(GetContactInfoSql, new { patientId });
+                }, user);
+            }, "get eor for the patient id",
+               parameters: new object[] { patientId, user });
         }
 
         /// <summary>
